@@ -933,6 +933,26 @@ class BigTextMatcherModel(AnnotatorModel, HasStorageModel):
         HasStorageModel.loadStorages(path, spark, storage_ref, BigTextMatcherModel.databases)
 
 
+class EmailMatcher(AnnotatorApproach):
+
+    @keyword_only
+    def __init__(self):
+        super(EmailMatcher, self).__init__(classname="com.johnsnowlabs.nlp.annotators.EmailMatcher")
+
+    def _create_model(self, java_model):
+        return EmailMatcherModel(java_model=java_model)
+
+
+class EmailMatcherModel(AnnotatorModel):
+    name = "EmailMatcherModel"
+
+    def __init__(self, classname="com.johnsnowlabs.nlp.annotators.EmailMatcherModel", java_model=None):
+        super(EmailMatcherModel, self).__init__(
+            classname=classname,
+            java_model=java_model
+        )
+
+
 class PerceptronApproach(AnnotatorApproach):
     posCol = Param(Params._dummy(),
                    "posCol",

@@ -42,6 +42,7 @@ class SerializersTestSpec(unittest.TestCase):
         self.serialize_them(Lemmatizer, "lemmatizer")
         self.serialize_them(DateMatcher, "date_matcher")
         self.serialize_them(TextMatcher, "entity_extractor")
+        self.serialize_them(EmailMatcher, "email_matcher")
         self.serialize_them(PerceptronApproach, "perceptron_approach")
         self.serialize_them(SentenceDetector, "sentence_detector")
         self.serialize_them(SentimentDetector, "sentiment_detector")

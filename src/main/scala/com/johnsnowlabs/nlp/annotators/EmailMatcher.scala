@@ -3,12 +3,12 @@ package com.johnsnowlabs.nlp.annotators
 import com.johnsnowlabs.nlp.AnnotatorApproach
 import com.johnsnowlabs.nlp.AnnotatorType.{CHUNK, DOCUMENT}
 import org.apache.spark.ml.PipelineModel
-import org.apache.spark.ml.util.Identifiable
+import org.apache.spark.ml.util.{DefaultParamsReadable, Identifiable}
 import org.apache.spark.sql.Dataset
 
 
 /**
-  * Match, extract and clean emails from text
+  * Matchs, extracts and cleans emails from text
   *
   * @param uid internal element required for storing annotator to disk
   *
@@ -30,7 +30,7 @@ import org.apache.spark.sql.Dataset
 class EmailMatcher(override val uid: String) extends AnnotatorApproach[EmailMatcherModel] {
 
   /** Match, extract and clean emails from text */
-  override val description: String = "Match, extract and clean emails from text"
+  override val description: String = "Matchs, extracts and cleans emails from text"
 
   /** Ouput annotator type: CHUNK
     *
@@ -56,4 +56,4 @@ class EmailMatcher(override val uid: String) extends AnnotatorApproach[EmailMatc
 
 }
 
-
+object EmailMatcher extends DefaultParamsReadable[EmailMatcher]

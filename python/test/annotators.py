@@ -232,6 +232,24 @@ class TextMatcherTestSpec(unittest.TestCase):
         entity_extractor.fit(tokenized).transform(tokenized).show()
 
 
+class EmailMatcherTestSpec(unittest.TestCase):
+
+    def setUp(self):
+        text_file = "file:///" + os.getcwd() + "/../src/test/resources/email-matcher/test-all-cases.txt"
+        self.data = SparkContextForTest.spark.read.text(text_file)
+        self.data = self.data.withColumnRenamed("value", "text")
+
+    def runTest(self):
+        document_assembler = DocumentAssembler() \
+            .setInputCol("text") \
+            .setOutputCol("document")
+        emails_matcher = EmailMatcher() \
+            .setInputCols(['document']) \
+            .setOutputCol("emails")
+        assembled = document_assembler.transform(self.data)
+        emails_matcher.fit(assembled).transform(assembled).show()
+
+
 class DocumentNormalizerSpec(unittest.TestCase):
 
     def setUp(self):

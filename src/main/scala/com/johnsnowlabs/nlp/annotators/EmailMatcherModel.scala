@@ -3,13 +3,13 @@ package com.johnsnowlabs.nlp.annotators
 import com.johnsnowlabs.nlp.AnnotatorType.{CHUNK, DOCUMENT}
 import com.johnsnowlabs.nlp._
 import org.apache.commons.validator.routines.{DomainValidator, EmailValidator}
-import org.apache.spark.ml.util.Identifiable
+import org.apache.spark.ml.util.{DefaultParamsReadable, Identifiable}
 
 import scala.util.matching.Regex
 
 
 /**
-  * Detect and clean emails in a text
+  * Matchs, extracts and cleans emails from text
   *
   * See [[https://github.com/JohnSnowLabs/spark-nlp/blob/master/src/test/scala/com/johnsnowlabs/nlp/annotators/EmailMatcherTestSpec.scala]] for example on how to use this API.
   *
@@ -114,3 +114,5 @@ class EmailMatcherModel(override val uid: String) extends AnnotatorModel[EmailMa
   results
   }
 }
+
+object EmailMatcherModel extends DefaultParamsReadable[EmailMatcherModel]
