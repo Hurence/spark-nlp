@@ -44,6 +44,16 @@ class EmailMatcherModel(override val uid: String) extends AnnotatorModel[EmailMa
 
   def this() = this(Identifiable.randomUID("EMAIL_MATCHER"))
 
+
+  def isGoodTld(tld: String): Boolean = {
+    val imageExtensions = Array("jpg", "png", "gif", "svg", "bmp")
+    if (imageExtensions.contains(tld.toLowerCase)) {
+      return false
+    }
+    true
+  }
+
+
   def extractAndCleanEmail(potentialEmail: Regex.Match): (String, Int, Int) = {
     val emailRegex = """(\w[\w\.-]*@[\w\.-]+\.\w{2,3})""".r
     val email = emailRegex.findFirstMatchIn(potentialEmail.group(1)).orNull
@@ -61,22 +71,18 @@ class EmailMatcherModel(override val uid: String) extends AnnotatorModel[EmailMa
 
     val emailValidator = EmailValidator.getInstance
     val domainValidator = DomainValidator.getInstance
+
     if (emailValidator.isValid(email.group(1)) == true) {
       return (email.group(1),
               startEmail,
               endEmail)
     }
-    if (!domainValidator.isValid(domain)){
-//        println("------------>" + domain)
-    }
     if (!domainValidator.isValidTld(tld)){
       if (tld.size == 3){
+        if (!isGoodTld(tld)) return null
         val newTld = tld.substring(0,2)
-//          println("new tld : " + newTld)
         if (domainValidator.isValidTld(newTld)){
-//            println("new tld valid : " + newTld)
           splittedEmailByPoint.update(splittedEmailByPoint.length - 1, newTld)
-//            println("new email : " + splittedEmailByPoint.mkString("."))
           return (splittedEmailByPoint.mkString("."),
             startEmail,
             endEmail - 1)
@@ -89,7 +95,7 @@ class EmailMatcherModel(override val uid: String) extends AnnotatorModel[EmailMa
 
   override def annotate(annotations: Seq[Annotation]): Seq[Annotation] = {
     var results = Seq[Annotation]()
-    println(annotations)
+//    println(annotations)
     annotations.zipWithIndex.map { case (annotation, annotationIndex) =>
 
       val simpleEmailRegex = """([\w\.-]+@[\w\.-]+)""".r
@@ -97,9 +103,9 @@ class EmailMatcherModel(override val uid: String) extends AnnotatorModel[EmailMa
       for (potentialEmail <-  simpleEmailRegex.findAllMatchIn(annotation.result)) {
         val emailCleaned = extractAndCleanEmail(potentialEmail)
         if (emailCleaned != null) {
-          println("---------------")
-          println(potentialEmail.toString())
-          println(emailCleaned._1)
+//          println("---------------")
+//          println(potentialEmail.toString())
+//          println(emailCleaned._1)
           val ann = Annotation(
             outputAnnotatorType,
             emailCleaned._2, // start index email

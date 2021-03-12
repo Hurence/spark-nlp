@@ -14,3 +14,9 @@ toto@f
 toto@orange.f
 toto@ora,nge.fr
 tata@toto@titi.fr
+image_1024x1024@2x.jpg
+image_1024x1024@2x.JPG
+image_1024x1024@2x.png
+image_1024x1024@2x.PNG
+
+
